@@ -15,5 +15,5 @@ def settings():
     return render_template('settings.html')
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", debug=True )
+    app.run(ssl_context=('certs/cert.pem','certs/key.pem'), host="127.0.0.1", debug=True )
 

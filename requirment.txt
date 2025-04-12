@@ -1,2 +1,4 @@
-Flask
-Unicorn
+flask
+gunicorn
+waitress
+pyopenssl
