@@ -92,3 +92,32 @@
     color: white;
     opacity: 0.4;
 }
+
+
+/*log page - log viewer */
+
+#textEditor {
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+    max-height: 300px; /* Restrict height */
+    overflow-y: auto;  /* Enable vertical scrolling */
+    background-color: black; /* Background color for readability */
+    border: 1px solid #ddd; /* Add a border for structure */
+    font-family: "Courier New", Courier, monospace; /* Match log styling */
+    padding: 10px;
+    color: white;
+}
+
+#textEditor::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+#textEditor::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar */
+    border-radius: 4px; /* Rounded corners */
+}
+
+#textEditor::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color when hovered */
+}
