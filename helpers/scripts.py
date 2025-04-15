@@ -23,7 +23,7 @@ class LogViewer:
                 f'<span style="background-color: yellow; color: black;">{search_term}</span>',
                 self.logs
             )
-            message = f'Search term \"{search_term}\" found and highlighted.'
+            message = f'Search term \"{search_term}\" found.'
         else:
             highlighted_logs = self.logs
             message = f'Search term \"{search_term}\" not found in logs.'

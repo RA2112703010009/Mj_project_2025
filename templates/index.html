@@ -5,13 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+  <style>
+    /* Additional styling to ensure spacing and alignment */
+    .row {
+      align-items: center;
+    }
+
+    .col-md-6 {
+      padding: 15px; /* Adds padding to both sections */
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 5px);
+      z-index: 1050;
+      width: 100%;
+    }
+  </style>
 </head>
   
 <title>SQL_CHECKER</title>
 
 <body>
-
-<!-- Sidebar -->    
+  <!-- Sidebar -->
   <div id="sidebar">
     <h4>SQL CHECKER</h4>
     <hr>
@@ -31,63 +47,62 @@
   <!-- Main Content -->
   <div class="content">
     <div class="container mt-4">
-      <div class="row">
-          <!-- Search Box Section -->
-          <div class="col-md-6">
-            <h3>Process / Service Selection</h3>
-              <div class="mb-3">
-                  <input type="text" id="searchBox" class="form-control" placeholder="Search here..." autocomplete="off">
-                  <div id="dropdownList" class="dropdown-menu">
-                      <!-- Dropdown items to be dynamically populated -->
-                  </div>
-              </div>
-              <button class="btn btn-primary mt-2" id="confirmSelection" style="background-color:rgb(0, 0, 0) ;border-color: black; border-radius: 50px;">Confirm Selection</button>
+      <div class="row align-items-start"> <!-- Aligning the two sections in a single row -->
+        <!-- Search Box Section -->
+        <form method="POST" action="/" class="col-lg-6 col-md-6"> <!-- Equal width -->
+          <h3>Process / Service Selection</h3>
+          <div class="input-group mb-3">
+              <input type="text" name="SearchTerm" class="form-control" placeholder="Search here..." autocomplete="off" value="{{ search_term or ' ' }}">
           </div>
-  
-          <!-- Service Status Section -->
-          <div class="col-md-6">
-              <h3>Service Status and System Information</h3>
-              <div class="card">
-                  <div class="card-body">
-                      <h5 class="card-title">Service Status</h5>
-                      <p class="card-text">
-                          <!-- Placeholder for status visualization -->
-                          <span id="serviceStatus" class="badge bg-success">Active</span>
-                      </p>
-                      <hr>
-                      <h5 class="card-title">System Information</h5>
-                      <p class="card-text">
-                          <!-- Placeholder for system details -->
-                          <ul>
-                              <li>CPU Usage: 15%</li>
-                              <li>Memory Usage: 60%</li>
-                              <li>Disk Space: 80GB Free</li>
-                          </ul>
-                      </p>
-                  </div>
-              </div>
+          {% if processes and not selected_process %}
+          <div class="dropdown-menu show">
+            {% for process in processes %}
+            <button 
+              class="dropdown-item" 
+              type="submit" 
+              name="SelectedProcess" 
+              value="{{ process.name }} (PID: {{ process.pid }})">
+              {{ process.name }} (PID: {{ process.pid }})
+            </button>
+            {% endfor %}
           </div>
+          {% elif selected_process %}
+          <p>Selected: {{ selected_process }}</p>
+          {% endif %}
+          <button class="btn btn-primary mt-2" id="confirmSelection" style="background-color:black; border-color: black; border-radius: 50px;">Confirm Selection</button>
+        </form>
+
+        <!-- Service Status Section -->
+        <div class="col-md-6"> <!-- Equal width -->
+            <h3>Service Status and System Information</h3>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Service Status</h5>
+                    <p class="card-text">
+                        <span id="serviceStatus" class="badge bg-success">Active</span>
+                    </p>
+                    <hr>
+                    <h5 class="card-title">System Information</h5>
+                    <p class="card-text">
+                        <ul>
+                            <li>CPU Usage: 15%</li>
+                            <li>Memory Usage: 60%</li>
+                            <li>Disk Space: 80GB Free</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
       </div>
+    </div>
+
+    <hr>
+    <!-- Service Status and System Info Section -->
+    <div class="visual-container" style="height: 380px; border: 1px solid #ddd; background: linear-gradient(to bottom, #f8f9fa, #e9ecef); margin-top: 10px;">
+      <iframe src="/visualization/" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
   </div>
 
-  <hr>
-        <!-- Service Status and System Info Section -->
-    <div class="col-md-6">
-        <!-- Placeholder for future aesthetic enhancement -->
-        <div class="visual-container" style="height: 150px; border: 1px solid #ddd; background: linear-gradient(to bottom, #f8f9fa, #e9ecef); margin-top: 10px;">
-            <!-- Insert future graphics or visualization here -->
-            <p style="text-align: center; padding-top: 50px;">System Graphs or Icons</p>
-        </div>
-    </div>
-    </div>
-
-  
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-
 </html>

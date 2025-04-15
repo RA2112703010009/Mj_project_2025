@@ -54,6 +54,7 @@
     margin-left: 30px; /* Enough space for sidebar when closed */
     padding: 20px;
     transition: margin-left 0.3s ease-in-out;
+    position: relative;
 }
 
 /* Shift content when sidebar is active */

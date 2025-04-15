@@ -2,3 +2,6 @@ flask
 gunicorn
 waitress
 pyopenssl
+dash 
+plotly
+psutil
