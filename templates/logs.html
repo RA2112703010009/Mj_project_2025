@@ -8,76 +8,123 @@
 </head>
 <body>
 
-<div class="container-fluid mt-4">
-    <div class="row">
-        <!-- Sidebar -->
-        <div id="sidebar">
-            <h4>SQL CHECKER</h4>
-            <hr>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logs">Logs</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/settings">Settings</a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Main Content -->
-        <div class="content">
-            <div class="row">
-                <!--Log Viewer Content-->
-                <div class="col-md-6">
-                    <h3>Log Viewer</h3>
-                    <div id="textEditor" class="form-control shell-log mt-3">{{ logs|safe }}</div>
-                    
-                    <form method="POST" action="/logs" class="mt-3">
-                    <div class="input-group mb-3">
-                        <input type="text" id="logSearchBox" name="SearchTerm" class="form-control" placeholder="Enter search term...">
-                        <button type="submit" class="btn btn-secondary" id="searchButton">Search</button>
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div id="sidebar">
+                <h4>SQL CHECKER</h4>
+                <hr>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logs">Logs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/settings">Settings</a>
+                    </li>
+                </ul>
+            </div>
+    
+            <!-- Main Content - Split into Two Columns -->
+            <div class="content">
+                <div class="row">
+                    <!-- Left Column: Log Viewer -->
+                    <div class="col-md-6">
+                        <h3>Log Viewer</h3>
+                        <div id="textEditor" class="form-control shell-log mt-3" style="height: 800px; overflow-y: auto;">
+                            {{ logs|safe }}
+                        </div>
+    
+                        <!-- Feedback Message -->
+                        {% if message %}
+                        <div class="alert alert-info mt-3">{{ message }}</div>
+                        {% endif %}
                     </div>
-                    </form>
-
-                    <!--Feback Message -->
-                    {% if message %}
-                    <div class="alert alert-info">{{ message }}</div>
-                    {% endif %}
-                </div>
-
-                <div class="col-md-6">
-                    <h3>Previous Logs</h3>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Record</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>2025-04-01</td>
-                                <td>10:00 AM</td>
-                                <td><button class="btn btn-link btn-sm">View Log</button></td>
-                            </tr>
-                            <tr>
-                                <td>2025-03-31</td>
-                                <td>02:00 PM</td>
-                                <td><button class="btn btn-link btn-sm">View Log</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button class="btn btn-primary mt-3" id="currentLogsButton" style="border-radius: 50px;background-color: black;border-color: black;">Back to Current Logs</button>
+    
+                    <!-- Right Column: Advanced Log Search -->
+                    <div class="col-md-6">
+                        <h3>Advanced Log Search</h3>
+                        <form method="POST" action="/logs">
+                            <div class="row">
+                                <!-- Date Filter -->
+                                <div class="col-md-6">
+                                    <label for="logDate">Date (YYYY-MM-DD)</label>
+                                    <input type="date" id="logDate" name="logDate" class="form-control">
+                                </div>
+    
+                                <!-- Time Filter -->
+                                <div class="col-md-6">
+                                    <label for="logTime">Time (HH:MM:SS)</label>
+                                    <input type="time" id="logTime" name="logTime" class="form-control">
+                                </div>
+                            </div>
+    
+                            <div class="row mt-3">
+                                <!-- Host:Port Filter -->
+                                <div class="col-md-6">
+                                    <label for="hostPort">Host:Port</label>
+                                    <input type="text" id="hostPort" name="hostPort" class="form-control" placeholder="e.g., 192.168.1.1:3306">
+                                </div>
+    
+                                <!-- PID Filter -->
+                                <div class="col-md-6">
+                                    <label for="pid">Process ID (PID)</label>
+                                    <input type="number" id="pid" name="pid" class="form-control" placeholder="Enter PID">
+                                </div>
+                            </div>
+    
+                            <div class="row mt-3">
+                                <!-- Process Name Filter -->
+                                <div class="col-md-6">
+                                    <label for="procName">Process Name</label>
+                                    <input type="text" id="procName" name="procName" class="form-control" placeholder="e.g., MySQL">
+                                </div>
+    
+                                <!-- Database Filter -->
+                                <div class="col-md-6">
+                                    <label for="database">Database Name</label>
+                                    <input type="text" id="database" name="database" class="form-control" placeholder="Enter database">
+                                </div>
+                            </div>
+    
+                            <div class="row mt-3">
+                                <!-- Original Query Filter -->
+                                <div class="col-md-6">
+                                    <label for="originalQuery">Original Query</label>
+                                    <input type="text" id="originalQuery" name="originalQuery" class="form-control" placeholder="Enter SQL Query">
+                                </div>
+    
+                                <!-- Input Query Filter -->
+                                <div class="col-md-6">
+                                    <label for="inputQuery">Input Query</label>
+                                    <input type="text" id="inputQuery" name="inputQuery" class="form-control" placeholder="User-entered query">
+                                </div>
+                            </div>
+    
+                            <div class="row mt-3">
+                                <!-- Status Filter -->
+                                <div class="col-md-6">
+                                    <label for="status">Status</label>
+                                    <select id="status" name="status" class="form-control">
+                                        <option value="">All</option>
+                                        <option value="safe">Safe</option>
+                                        <option value="malicious">Malicious</option>
+                                    </select>
+                                </div>
+                            </div>
+    
+                            <!-- Search Button -->
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-secondary">Search Logs</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
 
 
 </body>
